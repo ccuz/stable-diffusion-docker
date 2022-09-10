@@ -48,7 +48,7 @@ RUN mkdir -p /home/stablediff/code
 VOLUME /home/stablediff/code
 
 CMD ["--web"]
-ENTRYPOINT ["python3", "scripts/dream.py"]
+ENTRYPOINT ["python3", "dream.py"]
 #ENTRYPOINT ["/bin/bash"]
 
 ## Build using:
