@@ -40,7 +40,7 @@ RUN python3 -m venv ~/.venv --prompt stable-diffusion && \
 #RUN pip install pipenv -q
 COPY requirements.txt /home/stablediff/requirements.txt
 COPY constraints.txt /home/stablediff/constraints.txt
-RUN pip install -r /home/stablediff/requirements.txt -c /home/stablediff/constraints.txt
+RUN pip install -c /home/stablediff/constraints.txt -r /home/stablediff/requirements.txt
 
 VOLUME /home/stablediff/.conda
 
