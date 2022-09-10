@@ -34,20 +34,26 @@ VOLUME /home/stablediff/.conda
 COPY environment.yaml /home/stablediff/environment.yaml
 COPY setup.py /home/stablediff/setup.py
 
-RUN conda update -n base -c defaults conda \
-    && conda env create -f environment.yaml \
-    && echo "conda activate ldm" > ~/.bashrc
-
-ENV CONDA_ENV_NAME ldm
-#RUN /bin/bash --login -c "/home/stablediff/bin/miniconda/bin/conda init bash && source /home/stablediff/.bashrc && /home/stablediff/bin/miniconda/bin/conda activate ldm"
+RUN conda update -n base -c defaults conda
+RUN conda env create -f environment.yaml
+# Make bash default docker shell instead of sh
+USER root
+RUN ["/bin/bash", "-c", "cp /bin/bash /bin/sh"]
+USER stablediff
 # see https://pythonspeed.com/articles/activate-conda-dockerfile/
+
+#RUN ["/bin/bash", "-c", "PATH=\"$PATH\" conda init bash"]
+RUN PATH="$PATH" conda init bash
+#RUN echo "conda activate ldm" >> ~/.bashrc
 
 RUN mkdir -p /home/stablediff/code
 VOLUME /home/stablediff/code
 
 COPY entrypoint.sh /home/stablediff/entrypoint.sh
+#ENV CONDA_ENV_NAME ldm
+#RUN source ~/.bashrc
 
-CMD ["--web"]
+#CMD ["--web"]
 ENTRYPOINT ["/home/stablediff/entrypoint.sh"]
 #ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "ldm", "python3", "scripts/dream.py"]
 #ENTRYPOINT ["/bin/bash"]

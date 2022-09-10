@@ -1,7 +1,10 @@
 #!/bin/bash --login
-
 # The --login ensures the bash configuration is loaded,
 # enabling Conda.
+
+export PATH="/home/stablediff/bin/miniconda/bin:$PATH"
+
+cat ~/.bashrc
 
 # Enable strict mode.
 set -euo pipefail
@@ -9,6 +12,8 @@ set -euo pipefail
 
 # Temporarily disable strict mode and activate conda:
 set +euo pipefail
+#conda env update -f environment.yaml
+pip install -e .
 conda activate ldm
 
 # Re-enable strict mode:
